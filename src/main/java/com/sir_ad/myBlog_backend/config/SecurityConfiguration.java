@@ -34,6 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URl).permitAll()
+                .antMatchers("/users/find/**","/posts/all","/posts/user","/posts/id","/posts/title","/comments/post").permitAll()
+                .antMatchers("/users/update","/users/delete","/posts/create","/posts/update","/posts/delete","/comments/create","/comments/update","/comments/delete").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/users/all","/comments/all").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new AuthenticationFilter(authenticationManager()))
@@ -58,4 +61,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
     }
+
+
 }

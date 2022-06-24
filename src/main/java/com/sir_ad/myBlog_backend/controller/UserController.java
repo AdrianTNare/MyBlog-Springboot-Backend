@@ -55,7 +55,7 @@ public class UserController {
     }
 
 //    might wanna put the id as a path variable for the posts
-    @GetMapping("find/id{id}")
+    @GetMapping("/find/id{id}")
     MappingJacksonValue findById(@RequestParam UUID id){
         Optional<User> user =  userService.findById(id);
 
@@ -63,12 +63,12 @@ public class UserController {
     }
 
 //    currently facing an internal server error when attemping to delete.
-    @DeleteMapping("delete")
+    @DeleteMapping("/delete")
     MappingJacksonValue deleteUser(@RequestParam("username") String username){
         return getMappingJacksonValue( userService.deleteByUsername(username));
     }
 
-    @PutMapping("update")
+    @PutMapping("/update")
     MappingJacksonValue updateUser(@RequestParam String username,@Valid @NotNull @RequestBody User user){
         Optional<User> updatedUser = userService.updateUser(username, user);
 
