@@ -47,15 +47,14 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest req){
         String token = req.getHeader(HEADER_NAME);
         if (token != null){
-            Claims user = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
+            Claims user = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
             if(user != null){
-                List<Object> objList = Arrays.asList(user.get("roles", Collection.class).stream().map(Object::toString).toArray());
-//                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-                return new UsernamePasswordAuthenticationToken(user, null, objList);
+                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }else {
                 return null;
             }

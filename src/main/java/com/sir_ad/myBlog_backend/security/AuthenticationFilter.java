@@ -48,6 +48,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Key key = Keys.hmacShaKeyFor(KEY.getBytes());
         Claims claims = Jwts.claims().setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
         String token = Jwts.builder().setClaims(claims).claim("roles",((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getAuthorities()).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
+//        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
         res.addHeader("token", token);
 
     }

@@ -1,5 +1,6 @@
 package com.sir_ad.myBlog_backend.service.impl;
 
+import com.sir_ad.myBlog_backend.model.Role;
 import com.sir_ad.myBlog_backend.model.User;
 import com.sir_ad.myBlog_backend.repository.RoleRepository;
 import com.sir_ad.myBlog_backend.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -104,7 +106,15 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        List<SimpleGrantedAuthority> grantedAuthorities = user.getRoles().stream().map(authority -> new SimpleGrantedAuthority(authority.getRoleName())).collect(Collectors.toList());
+//        List<SimpleGrantedAuthority> grantedAuthorities = user.getRoles()
+//                .stream()
+//                .map(authority -> new SimpleGrantedAuthority(authority.getRoleName()))
+//                .collect(Collectors.toList());
+
+        List<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
+                .map(Role::getRoleName)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
