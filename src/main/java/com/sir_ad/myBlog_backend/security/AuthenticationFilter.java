@@ -36,8 +36,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
 
             User applicationUser = new ObjectMapper().readValue(req.getInputStream(), User.class);
-            UsernamePasswordAuthenticationToken authreq =  new UsernamePasswordAuthenticationToken(applicationUser.getUsername(), applicationUser.getPassword(), new ArrayList<>());
-            Authentication exampleAuth =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(applicationUser.getUsername(), applicationUser.getPassword(), new ArrayList<>()));
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(applicationUser.getUsername(), applicationUser.getPassword(), new ArrayList<>()));
         } catch (IOException e){
             throw new RuntimeException(e);
@@ -49,7 +47,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Date exp = new Date(System.currentTimeMillis()+ EXPIRATION_TIME);
         Key key = Keys.hmacShaKeyFor(KEY.getBytes());
         Claims claims = Jwts.claims().setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
-        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
+        String token = Jwts.builder().setClaims(claims).claim("roles",((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getAuthorities()).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
+//        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
         res.addHeader("token", token);
 
     }

@@ -1,11 +1,13 @@
 package com.sir_ad.myBlog_backend.security;
 
+import com.sir_ad.myBlog_backend.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -15,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sir_ad.myBlog_backend.config.SecurityConstants.*;
 
@@ -41,7 +47,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest req){
         String token = req.getHeader(HEADER_NAME);
         if (token != null){
-            Claims user = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
+            Claims user = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
