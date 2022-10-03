@@ -28,12 +28,10 @@ public class User {
     @NotEmpty(message = "Your unique username cannot be empty.")
     private String username;
 
-    @Column(name = "name", nullable = false)
-    @NotEmpty(message = "Your name cannot be empty")
+    @Column(name = "name", columnDefinition = "varchar(255) default 'Name'")
     private String name;
 
-    @Column(name = "last_name")
-    @NotEmpty(message = " Please provide your last name")
+    @Column(name = "last_name" , columnDefinition = "varchar(255) default 'Lastname'")
     private String lastname;
 
     @Column(name = "email", nullable = false, unique = true)

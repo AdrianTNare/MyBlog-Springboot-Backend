@@ -39,20 +39,20 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    private int subtractPageByOne(int page){
-        return (page < 1) ? 0 : page - 1 ;
+    private int subtractPageByOne(int page) {
+        return (page < 1) ? 0 : page - 1;
     }
 
-//  modify this function to use an existing role from the rolerepo
+    //  modify this function to use an existing role from the rolerepo
     @Override
     public void insertUser(User user) {
-        if((user.getUsername()!= null) && (user.getEmail() != null)){
+        if ((user.getUsername() != null) && (user.getEmail() != null) && (user.getPassword() != null)) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setRoles(Collections.singletonList(roleRepository.findByRoleName(userRole)));
             userRepository.save(user);
@@ -77,20 +77,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteByUsername(String username) {
-         userRepository.deleteByUsername(username);
-         User user = findByUsername(username);
-         if(user == null){
-             return "success";
-         }
-         return null;
+        userRepository.deleteByUsername(username);
+        User user = findByUsername(username);
+        if (user == null) {
+            return "success";
+        }
+        return null;
     }
 
-//  fix to first check if user is present in database
+    //  fix to first check if user is present in database
     @Override
     public Optional<User> updateUser(String userName, User user) {
         User updatedUser = null;
         User userPresent = findByUsername(userName);
-        if(userPresent != null){
+        if (userPresent != null) {
             updatedUser = userPresent;
             updatedUser.setEmail(user.getEmail());
             updatedUser.setName(user.getName());
