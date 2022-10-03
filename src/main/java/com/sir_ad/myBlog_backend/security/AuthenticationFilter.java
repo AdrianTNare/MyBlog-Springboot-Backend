@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sir_ad.myBlog_backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.sir_ad.myBlog_backend.config.SecurityConstants.*;
 
@@ -48,8 +51,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Key key = Keys.hmacShaKeyFor(KEY.getBytes());
         Claims claims = Jwts.claims().setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
         String token = Jwts.builder().setClaims(claims).claim("roles",((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getAuthorities()).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
-//        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
-        res.addHeader("token", token);
+        final Map<String, Object> body = new HashMap<>();
+        body.put("token", token);
+        String jsonBody = new ObjectMapper().writeValueAsString(body);
+        res.getWriter().write(jsonBody);
+        res.getWriter().flush();
 
     }
 }

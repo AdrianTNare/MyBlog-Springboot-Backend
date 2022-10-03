@@ -27,35 +27,39 @@ import static com.sir_ad.myBlog_backend.config.SecurityConstants.*;
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     @Autowired
-    public AuthorizationFilter(AuthenticationManager authManager){
+    public AuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(HEADER_NAME);
-        if(header == null){
+        try {
+            String header = req.getHeader(HEADER_NAME);
+            if (header == null) {
+                chain.doFilter(req, res);
+                return;
+            }
+            UsernamePasswordAuthenticationToken authentication = authenticate(req);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(req, res);
-            return;
-        }
+        } catch (IOException e) {
+            System.out.println(e);
 
-        UsernamePasswordAuthenticationToken authentication = authenticate(req);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
+        }
     }
 
-    private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest req){
+    private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest req) {
         String token = req.getHeader(HEADER_NAME);
-        if (token != null){
+        if (token != null) {
             Claims user = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            if(user != null){
+            if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }else {
+            } else {
                 return null;
             }
         }
