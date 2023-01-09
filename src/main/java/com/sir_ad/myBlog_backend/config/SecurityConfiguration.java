@@ -2,13 +2,11 @@ package com.sir_ad.myBlog_backend.config;
 
 import com.sir_ad.myBlog_backend.security.AuthenticationFilter;
 import com.sir_ad.myBlog_backend.security.AuthorizationFilter;
-import com.sir_ad.myBlog_backend.service.ApplicationUserDetailsService;
 import com.sir_ad.myBlog_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

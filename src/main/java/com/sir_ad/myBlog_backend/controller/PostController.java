@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.sir_ad.myBlog_backend.model.Post;
 import com.sir_ad.myBlog_backend.service.PostService;
-import com.sir_ad.myBlog_backend.service.UserService;
 import com.sir_ad.myBlog_backend.utiliy.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -21,12 +20,10 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
-    private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService,UserService userService){
+    public PostController(PostService postService){
         this.postService = postService;
-        this.userService = userService;
     }
 
     @PostMapping("/create")
