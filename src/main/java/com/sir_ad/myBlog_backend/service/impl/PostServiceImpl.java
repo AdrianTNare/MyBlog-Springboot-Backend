@@ -1,7 +1,5 @@
 package com.sir_ad.myBlog_backend.service.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sir_ad.myBlog_backend.model.Post;
 import com.sir_ad.myBlog_backend.model.User;
 import com.sir_ad.myBlog_backend.repository.PostRepository;
@@ -16,11 +14,8 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 

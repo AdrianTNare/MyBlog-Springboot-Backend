@@ -3,7 +3,6 @@ package com.sir_ad.myBlog_backend.controller;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.sir_ad.myBlog_backend.model.Post;
-import com.sir_ad.myBlog_backend.model.User;
 import com.sir_ad.myBlog_backend.service.PostService;
 import com.sir_ad.myBlog_backend.service.UserService;
 import com.sir_ad.myBlog_backend.utiliy.Pager;

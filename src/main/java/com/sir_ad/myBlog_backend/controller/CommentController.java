@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-//update to include information of logged-in user when making nad updating comments.
+//update to include information of logged-in user when making and updating comments.
 @RequestMapping("comments")
 @RestController
 public class CommentController {
@@ -36,10 +35,11 @@ public class CommentController {
         this.userService = userService;
     }
 
-//    refactor the endpoint to simply return the new comment without having to use the id
-//    since the user doesn't have any knowledge about the id at this point
     @PostMapping("/create")
-    public MappingJacksonValue addComment(@NotNull @RequestBody Comment comment){
+    public MappingJacksonValue addComment(@Valid @NotNull @RequestParam UUID postId, @NotNull @RequestBody Comment comment){
+        Post post = new Post(postId,"","",new User());
+        post.setId(postId);
+        comment.setPost(post);
         Optional<Comment> newComment = commentService.addComment(comment);
 
         return getMappingJacksonValue(newComment);

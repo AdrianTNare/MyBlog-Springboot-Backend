@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @JsonFilter("userFilter")
 @Entity
+@Table(name="users")
 public class User {
 
     @Id
