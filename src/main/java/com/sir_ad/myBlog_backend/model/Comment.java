@@ -1,6 +1,5 @@
 package com.sir_ad.myBlog_backend.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import org.hibernate.annotations.CreationTimestamp;
 

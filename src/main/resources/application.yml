@@ -1,0 +1,15 @@
+spring:
+    profiles:
+      active: dev
+
+management:
+    info:
+      env:
+        enabled: true
+
+    application:
+        name: Blog bakcend application
+        description: A blog with articles about The about anything.
+        author: Adrian Nare
+        version: '@project.version@'
+

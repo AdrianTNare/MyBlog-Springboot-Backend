@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.sir_ad.myBlog_backend.model.User;
 import com.sir_ad.myBlog_backend.service.UserService;
-import com.sir_ad.myBlog_backend.utiliy.Pager;
 import com.sir_ad.myBlog_backend.utiliy.UserPager;
-import org.springframework.data.domain.Page;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +13,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
-//ideally, in any of the endpoints, we shouldn't be getting the id directly from the user
-// , rather , we should be getting the id from authenticating their token/cookie first, query
-// their id from the token middleware and add that id to the "request params", this will then
-// be made available to the endpint in question
-// consider adding a "log in route for the user"
 
 @RequestMapping("users")
 @RestController
@@ -40,7 +33,7 @@ public class UserController {
     }
 
 //    makes sense to use @pathvariable for the page number here
-//    real users might not have to user this endpoint.
+//    real users might not have to use this endpoint.
     @GetMapping("/all{page}")
     MappingJacksonValue findAll(@RequestParam(name="page" ,defaultValue = "0" ) int page){
         UserPager pager = new UserPager(userService.findAll(page));
