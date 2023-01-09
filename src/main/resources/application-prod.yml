@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_PART}/${PROD_DB_NAME}
-    username: postgres
-    password: 12345678
+    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
     platform: postgres
     data: classpath:/sql/import.sql
 
@@ -20,5 +20,3 @@ spring:
   sql:
     init:
       mode: always
-
-
