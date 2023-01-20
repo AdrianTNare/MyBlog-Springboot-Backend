@@ -1,7 +1,3 @@
-spring:
-    profiles:
-      active: dev
-
 management:
     info:
       env:
@@ -13,3 +9,13 @@ management:
         author: Adrian Nare
         version: '@project.version@'
 
+app:
+    property:
+      signupUrl: ${SIGN_UP_URL}
+      authKey: ${AUTH_KEY}
+      headerName: ${HEADER_NAME}
+      expirationTime: ${EXPIRATION_TIME}
+
+spring:
+  profiles:
+    active: dev

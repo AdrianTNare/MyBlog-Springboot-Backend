@@ -1,10 +1,12 @@
 package com.sir_ad.myBlog_backend.security;
 
+import com.sir_ad.myBlog_backend.config.SecurityConstants;
 import com.sir_ad.myBlog_backend.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,19 +24,22 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sir_ad.myBlog_backend.config.SecurityConstants.*;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
+    private final SecurityConstants securityConstants;
+
     @Autowired
-    public AuthorizationFilter(AuthenticationManager authManager) {
+    public AuthorizationFilter(AuthenticationManager authManager, ApplicationContext ctx) {
         super(authManager);
+        this.securityConstants = ctx.getBean(SecurityConstants.class);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         try {
-            String header = req.getHeader(HEADER_NAME);
+            System.out.println("me");
+            String header = req.getHeader(securityConstants.getHeaderName());
             if (header == null) {
                 chain.doFilter(req, res);
                 return;
@@ -49,10 +54,10 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest req) {
-        String token = req.getHeader(HEADER_NAME);
+        String token = req.getHeader(securityConstants.getHeaderName());
         if (token != null) {
             Claims user = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
+                    .setSigningKey(Keys.hmacShaKeyFor(securityConstants.getAuthKey().getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
