@@ -17,7 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static com.sir_ad.myBlog_backend.config.SecurityConstants.SIGN_UP_URl;
+
 
 @Configuration
 @EnableWebSecurity
@@ -25,20 +25,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SecurityConstants securityConstants;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URl).permitAll()
+                .antMatchers(HttpMethod.POST, securityConstants.getSignUpUrl()).permitAll()
                 .antMatchers("/users/find/**","/posts/all","/posts/user","/posts/id","/posts/title","/comments/post").permitAll()
                 .antMatchers("/users/update/*","/users/delete/*","/posts/create/*","/posts/update/*","/posts/delete/*","/comments/create/*","/comments/update/*","/comments/delete/*").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .antMatchers("/users/all/*","/comments/all/*").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new AuthenticationFilter(authenticationManager()))
-                .addFilter(new AuthorizationFilter(authenticationManager()))
+                .addFilter(new AuthenticationFilter(authenticationManager(), getApplicationContext()))
+                .addFilter(new AuthorizationFilter(authenticationManager(), getApplicationContext()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
