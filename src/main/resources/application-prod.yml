@@ -5,6 +5,8 @@ spring:
     password: ${PROD_DB_PASSWORD}
     platform: postgres
     data: classpath:/sql/import.sql
+    # initialization for spring-boot before 2.5, change to other value once values have been loaded
+    initialization-mode: never
 
   jpa:
     properties:
@@ -16,7 +18,7 @@ spring:
 
     hibernate:
       ddl-auto: update
-
-  sql:
-    init:
-      mode: always
+  # initialization for spring-boot after 2.5
+  #sql:
+  #  init:
+  #    mode: always
