@@ -38,7 +38,6 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         try {
-            System.out.println("me");
             String header = req.getHeader(securityConstants.getHeaderName());
             if (header == null) {
                 chain.doFilter(req, res);
