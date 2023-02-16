@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.sir_ad.myBlog_backend.model.User;
 import com.sir_ad.myBlog_backend.service.UserService;
 import com.sir_ad.myBlog_backend.utiliy.UserPager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class UserController {
 //    have to choose between @requestparam , @pathvariable, @requestbody for methods
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService){
         this.userService = userService;
     }
