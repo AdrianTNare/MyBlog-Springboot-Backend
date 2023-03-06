@@ -1,0 +1,1 @@
+This projects serves as the backend to a nextjs blog frontend application. 
