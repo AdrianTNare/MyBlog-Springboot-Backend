@@ -24,12 +24,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Lazy
     @Autowired
     private UserService userService;
 
     @Autowired
     private SecurityConstants securityConstants;
+    @Lazy
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
